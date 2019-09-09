@@ -1,7 +1,33 @@
 class Api::ProductsController < ApplicationController
   def index
+    search_term = params[:search]
+    discount_option = params[:discount]
+    sort_attribute = params[:sort]
+    sort_order = params[:sort_order]
+    discount_level = 60
+
+
     @products = Product.all
-    render 'index.json.jb'
+
+    
+    if search_term
+      @products = @products.where("name iLIKE ?", "%#{search_term}%")
+    end
+
+    if discount_option == "true"
+      @products = @products.where("price < ?", discount_level)
+    end 
+
+
+    if sort_attribute && sort_order 
+      @products = @products.order(sort_attribute => sort_order)
+    elsif sort_attribute 
+      @product = @products.order(sort_attribute)
+    else
+      @product = @products.order(:id)
+    end 
+
+      render 'index.json.jb'
   end
 
   def create
