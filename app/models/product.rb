@@ -1,4 +1,7 @@
 class Product < ApplicationRecord
+  belongs_to :supplier 
+  has_many :images
+
   validates :name, presence: true
   validates :name, uniqueness: true # better to do in separate lines 
   validates :price, presence: true
@@ -8,6 +11,8 @@ class Product < ApplicationRecord
   # or validates :description, length: { in: 10..500 } 
   validates :description, presence: true 
   validates :image_url, presence: true
+
+
   
 
   def is_discounted?
