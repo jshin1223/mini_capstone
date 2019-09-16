@@ -1,4 +1,7 @@
 class Api::ProductsController < ApplicationController
+  before_action :authenticate_admin, only: [:create, :update, :destroy]
+
+
   def index
     search_term = params[:search]
     discount_option = params[:discount]
