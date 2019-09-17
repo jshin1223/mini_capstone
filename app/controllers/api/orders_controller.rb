@@ -39,6 +39,7 @@ class Api::OrdersController < ApplicationController
     @order = Order.find(params[:product_id])
     render 'show.json.jb'
   end 
+end
 end 
 
 
