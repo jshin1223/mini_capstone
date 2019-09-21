@@ -1,35 +1,32 @@
 class Product < ApplicationRecord
-  belongs_to :supplier 
+  belongs_to :supplier
   has_many :images
-  has_many :orders
-  has_many :product_categoties
-  
+  has_many :product_categories
+  has_many :categories, through: :product_categories
+  has_many :carted_products
+  # has_many :orders, through: :carted_products
+  # has_many :users, through: :carted_products
 
   validates :name, presence: true
-  validates :name, uniqueness: true # better to do in separate lines 
+  validates :name, uniqueness: true
   validates :price, presence: true
   validates :price, numericality: { greater_than: 0 }
-  validates :description, length: { maximum: 500 }
-  validates :description, length: { minimum: 10 } # or validates :description, length: { maximum: 500, minimum: 10 } 
-  # or validates :description, length: { in: 10..500 } 
-  validates :description, presence: true 
-
-
-  
+  validates :description, length: { in: 10..500 }
+  validates :description, presence: true
 
   def is_discounted?
-    price < 10 
-    # price < 10 ? true : false
+    price < 60
   end
 
+  def category_names
+    categories.map { |category| category.name }
+  end
 
-  def tax 
+  def tax
     price * 0.09
   end
 
   def total
-    tax + price
+    price + tax
   end
-
 end
-
